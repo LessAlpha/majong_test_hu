@@ -11,46 +11,51 @@ var ishuLastNew = function (data1,naiziNum,isFour) {
     var shengxia = [];    //剩下的牌
     var lianxu = {};      //连续的牌
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////// 分解成顺子和刻子
+    /**
+     * 分解成顺子和刻子
+     * @param data
+     * @param tag
+     */
     function decompose(data, tag) {
         data.sort();
-        //刻子
+        // 刻子
         if (data.length >= 2) {
             var paiNum = data[0];
-            if (paiNum == data[1] && paiNum == data[2]) {
+            if (paiNum == data[1] && paiNum == data[2]) {// 如果前3个牌都一样，可以组成一个刻子
                 if (!zuhe[tag]) {
                     zuhe[tag] = [];
                 }
                 zuhe[tag].push(paiNum);
                 zuhe[tag].push(data[1]);
                 zuhe[tag].push(data[2]);
-                //去掉刻字 递归自己
+                // 去掉刻字，递归自己
                 data.splice(0, 3);
                 decompose(data, tag);
             }
         }
 
-
         for (var i = 0; i < data.length - 2 && data[i] < 60; ++i) {
-            //顺子
             var first = data[i];
             var secondIndex = data.indexOf(first + 1);
             var thirdIndex = data.indexOf(first + 2);
-            if (secondIndex != -1 && thirdIndex != -1) {// //顺子
+            if (secondIndex != -1 && thirdIndex != -1) {// 能组成一个顺子
                 if (!zuhe[tag]) {
                     zuhe[tag] = [];
                 }
-                //因为数组长度一直在变 所有写成下面这样
+                // 因为数组长度一直在变 所有写成下面这样
                 zuhe[tag].push((data.splice(data.indexOf(first), 1))[0]);
                 zuhe[tag].push((data.splice(data.indexOf(first + 1), 1))[0]);
                 zuhe[tag].push((data.splice(data.indexOf(first + 2), 1))[0]);
                 decompose(data, tag);
             }
         }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////分解成顺子和刻子
+    }/////////////////////////////////////////////////////////////////////////////////////////////////////// 分解成顺子和刻子
 
-    ////////////////////////////////////////////////////////////////////////分解成连续的牌  类似5 6  1 3  12 89  字牌   61 61
+    /**
+     * 分解成连续的牌  类似 5 6  1 3  12 89  字牌   61 61
+     * @param data
+     * @param tag
+     */
     function decomposeTwos(data, tag) {
         data.sort();
         if(data.length >= 1){
@@ -91,8 +96,7 @@ var ishuLastNew = function (data1,naiziNum,isFour) {
             }
 
         }
-    }
-    ////////////////////////////////////////////////////////////////////////分解成连续的牌  类似5 6  1 3  12 89  字牌   61 61
+    }////////////////////////////////////////////////////////////////////////分解成连续的牌  类似5 6  1 3  12 89  字牌   61 61
 
     data1.sort();
     //从0开始不断的截断数组,分左右, 依次去组合  然后把左右剩下的合到一起
@@ -171,7 +175,7 @@ var ishuLastNew = function (data1,naiziNum,isFour) {
             }
         }
 
-    }else {
+    } else {
         console.warn('参数错误');
     }
 
@@ -202,8 +206,8 @@ var findFourEqual = function (data2,naiziNum) {
     return result;
 };
 
-(function(){
-    var res = [1,1,1, 1,2,3, 21,22,23, 25,25,26, 41,41];
+(function() {
+    var res = [21,22,23, 25,25,26, 1,1,1, 1,2,3, 41,41];
 
     console.info("接收的数据为", res);
 
@@ -226,9 +230,23 @@ var findFourEqual = function (data2,naiziNum) {
     var cpDate1 = [].concat(res);
     var result = ishuLastNew(cpDate,naiziNum,false);
     console.info('检测结果 ： ', result);
-    if(!result && !findFourEqual(cpDate1)){
+    if(!result && !findFourEqual(cpDate1)) {
         console.info("不能胡牌");
     }  else {
         console.info('可以胡牌')
     }
 }());
+
+//(function(){
+//    var i = 0;
+//    function f1(){
+//        console.info('before',i);
+//        var j = i;
+//        if(i<2) {
+//            i++;
+//            f1();
+//        }
+//        console.warn('after ', j, i);
+//    }
+//    f1();
+//}());
