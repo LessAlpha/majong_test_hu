@@ -1,0 +1,18 @@
+
+# Created by .gitignore support plugin (hsz.mobi)
+.idea/
+*.bat
+*.cmd
+assistant/
+
+
+# VisualStudio2013
+*.suo
+*.user
+*.sln.docstates
+web.Debug.config
+web.Release.config
+web.config
+
+resource__/
+node_modules/
